@@ -1,0 +1,40 @@
+{
+  "name": "week-4-backend-development-topzyray",
+  "version": "1.0.0",
+  "description": "Week 4 web development assignment",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/topzyray/expensetrackerapi.git"
+  },
+  "keywords": [
+    "expense",
+    "income",
+    "expenditure"
+  ],
+  "author": "Tope Taiwo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/topzyray/expensetrackerapi/issues"
+  },
+  "homepage": "https://github.com/topzyray/expensetrackerapi#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "helmet": "^7.1.0",
+    "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.5.4",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
+    "passport-local": "^1.0.0"
+  }
+}
