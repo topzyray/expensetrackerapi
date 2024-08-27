@@ -2,14 +2,17 @@ import Expense from "../models/expense.model.js";
 
 export const getAllExpenses = async (req, res) => {
   try {
-    const expenses = await Expense.find().populate(
+    const expenses = await Expense.find({ user: req.user._id }).populate(
       "user",
       "firstName lastName"
     );
     if (expenses.length <= 0)
-      return res
-        .status(404)
-        .json({ success: false, status: 404, message: "No expenses found" });
+      return res.status(404).json({
+        success: false,
+        status: 404,
+        message: "No expenses found for the current user!",
+      });
+
     res.json({
       success: true,
       status: 200,
@@ -37,6 +40,9 @@ export const getExpenseById = async (req, res) => {
       return res
         .status(404)
         .json({ success: false, status: 404, message: "Expense not found" });
+
+    if (expense.user._id.toString() !== req.user._id.toString())
+      return res.status(403).json({ message: "You are not authorized." });
 
     res.json({ success: true, status: 200, data: expense });
   } catch (error) {
