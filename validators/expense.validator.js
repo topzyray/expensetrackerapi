@@ -22,13 +22,12 @@ const createExpenseSchema = Joi.object({
   date: Joi.date().default(Date.now).messages({
     "date.base": "Date must be a valid date",
   }),
-  userId: Joi.string()
+  user: Joi.string()
     .pattern(/^[0-9a-fA-F]{24}$/)
-    .required()
     .messages({
-      "string.base": "UserId must be a string",
-      "string.pattern.base": "UserId must be a valid MongoDB ObjectId",
-      "any.required": "UserId is required",
+      "string.base": "user must be a string",
+      "string.pattern.base": "user must be a valid MongoDB ObjectId",
+      "any.required": "user is required",
     }),
 });
 
@@ -50,11 +49,11 @@ const updateExpenseSchema = Joi.object({
   date: Joi.date().messages({
     "date.base": "Date must be a valid date",
   }),
-  userId: Joi.string()
+  user: Joi.string()
     .pattern(/^[0-9a-fA-F]{24}$/)
     .messages({
-      "string.base": "UserId must be a string",
-      "string.pattern.base": "UserId must be a valid MongoDB ObjectId",
+      "string.base": "user must be a string",
+      "string.pattern.base": "user must be a valid MongoDB ObjectId",
     }),
 });
 

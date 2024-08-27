@@ -4,8 +4,9 @@ import {
   createExpense,
   deleteExpense,
   getAllExpenses,
+  getExpenseById,
   updateExpense,
-} from "../controller/expense.controller.js";
+} from "../controllers/expense.controller.js";
 import {
   ValidateExpenseUpdateMW,
   ValidateNewExpenseMW,
@@ -14,24 +15,29 @@ import {
 const expenseRouter = express.Router();
 
 expenseRouter.get(
-  "/expenses",
+  "/",
   passport.authenticate("jwt", { session: false }),
   getAllExpenses
 );
+expenseRouter.get(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  getExpenseById
+);
 expenseRouter.post(
-  "/expenses",
+  "/",
   passport.authenticate("jwt", { session: false }),
   ValidateNewExpenseMW,
   createExpense
 );
 expenseRouter.put(
-  "/expenses/:id",
+  "/:id",
   passport.authenticate("jwt", { session: false }),
   ValidateExpenseUpdateMW,
   updateExpense
 );
 expenseRouter.delete(
-  "/expenses/:id",
+  "/:id",
   passport.authenticate("jwt", { session: false }),
   deleteExpense
 );
