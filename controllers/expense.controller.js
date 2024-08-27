@@ -7,8 +7,15 @@ export const getAllExpenses = async (req, res) => {
       "firstName lastName"
     );
     if (expenses.length <= 0)
-      return res.status(404).json({ message: "No expenses found" });
-    res.json({ success: true, status: 200, data: expenses });
+      return res
+        .status(404)
+        .json({ success: false, status: 404, message: "No expenses found" });
+    res.json({
+      success: true,
+      status: 200,
+      count: expenses.length,
+      data: expenses,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -26,9 +33,12 @@ export const getExpenseById = async (req, res) => {
       "firstName lastName"
     );
 
-    if (!expense) return res.status(404).json({ message: "Expense not found" });
+    if (!expense)
+      return res
+        .status(404)
+        .json({ success: false, status: 404, message: "Expense not found" });
 
-    res.json(expense);
+    res.json({ success: true, status: 200, data: expense });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -47,9 +57,20 @@ export const createExpense = async (req, res) => {
       category,
       user,
     });
-    res
-      .status(201)
-      .json({ message: "Expense created successfully", expense: newExpense });
+
+    if (!newExpense)
+      return res.status(400).json({
+        success: false,
+        status: 400,
+        message: "Failed to create expense. Please try again.",
+      });
+
+    res.status(201).json({
+      success: true,
+      status: 200,
+      message: "Expense created successfully",
+      data: newExpense,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -64,7 +85,10 @@ export const updateExpense = async (req, res) => {
     const { amount, date, description, category } = req.body;
     const expense = await Expense.findById(req.params.id);
 
-    if (!expense) return res.status(404).json({ message: "Expense not found" });
+    if (!expense)
+      return res
+        .status(404)
+        .json({ success: false, status: 404, message: "Expense not found" });
     if (expense.user.toString() !== req.user._id.toString())
       return res
         .status(403)
@@ -76,7 +100,12 @@ export const updateExpense = async (req, res) => {
     expense.category = category || expense.category;
     await expense.save();
 
-    res.json({ message: "Expense updated successfully", expense });
+    res.json({
+      success: true,
+      status: 200,
+      message: "Expense updated successfully",
+      data: expense,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -90,14 +119,21 @@ export const deleteExpense = async (req, res) => {
     }
     const expense = await Expense.findById(req.params.id);
 
-    if (!expense) return res.status(404).json({ message: "Expense not found" });
+    if (!expense)
+      return res
+        .status(404)
+        .json({ success: false, status: 404, message: "Expense not found" });
     if (expense.user.toString() !== req.user._id.toString())
       return res
         .status(403)
         .json({ message: "You are not authorized to delete this expense" });
 
     await Expense.findByIdAndDelete(expense._id);
-    res.json({ message: "Expense deleted successfully" });
+    res.json({
+      success: true,
+      status: 200,
+      message: "Expense deleted successfully",
+    });
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ message: "Server error" });
